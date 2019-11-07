@@ -1,0 +1,42 @@
+package com.vosure.serialization;
+
+public class SerializationWriter {
+
+    public static final byte[] HEADER = "HS".getBytes();
+    public static final short VERSION = 0x0100;
+
+    public static int writeBytes(byte[] dest, int pointer, byte value) {
+        dest[pointer++] = value;
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, short value) {
+        dest[pointer++] = (byte) ((value >> 8) & 0xff);
+        dest[pointer++] = (byte) ((value >> 0) & 0xff);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, int value) {
+        dest[pointer++] = (byte) ((value >> 24) & 0xff);
+        dest[pointer++] = (byte) ((value >> 16) & 0xff);
+        dest[pointer++] = (byte) ((value >> 8) & 0xff);
+        dest[pointer++] = (byte) ((value >> 0) & 0xff);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, long value) {
+        dest[pointer++] = (byte) ((value >> 56) & 0xff);
+        dest[pointer++] = (byte) ((value >> 48) & 0xff);
+        dest[pointer++] = (byte) ((value >> 40) & 0xff);
+        dest[pointer++] = (byte) ((value >> 32) & 0xff);
+        dest[pointer++] = (byte) ((value >> 24) & 0xff);
+        dest[pointer++] = (byte) ((value >> 16) & 0xff);
+        dest[pointer++] = (byte) ((value >> 8) & 0xff);
+        dest[pointer++] = (byte) ((value >> 0) & 0xff);
+
+        return pointer;
+    }
+}
