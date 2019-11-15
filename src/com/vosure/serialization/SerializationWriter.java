@@ -5,6 +5,13 @@ public class SerializationWriter {
     public static final byte[] HEADER = "HS".getBytes();
     public static final short VERSION = 0x0100;
 
+    public static int writeBytes(byte[] dest, int pointer, byte[] data) {
+        for (int i = 0; i < data.length; i++)
+            dest[pointer++] = data[i];
+
+        return pointer;
+    }
+
     public static int writeBytes(byte[] dest, int pointer, byte value) {
         dest[pointer++] = value;
 
@@ -64,4 +71,44 @@ public class SerializationWriter {
 
         return pointer;
     }
+
+    public static int writeBytes(byte[] dest, int pointer, String string) {
+        pointer = writeBytes(dest, pointer, (short) string.length());
+
+        return writeBytes(dest, pointer, string.getBytes());
+    }
+
+    public static byte readByte(byte[] data, int pointer) {
+        return data[pointer];
+    }
+
+    public static short readShort(byte[] data, int pointer) {
+        return (short) ((data[pointer] << 8) | (data[pointer + 1]));
+    }
+
+    public static char readChar(byte[] data, int pointer) {
+        return (char) ((data[pointer] << 8) | (data[pointer + 1]));
+    }
+
+    public static int readInt(byte[] data, int pointer) {
+        return (int) ((data[pointer] << 24) | (data[pointer + 1] << 16) | (data[pointer + 2] << 8) | (data[pointer + 3]));
+    }
+
+    public static long readLong(byte[] data, int pointer) {
+        return (long) ((data[pointer] << 56) | (data[pointer + 1] << 48) | (data[pointer + 2] << 40) | (data[pointer + 3] << 32) |
+                (data[pointer + 4] << 24) | (data[pointer + 5] << 16) | (data[pointer + 6] << 8) | (data[pointer + 7]));
+    }
+
+    public static float readFloat(byte[] data, int pointer) {
+        return Float.intBitsToFloat(readInt(data, pointer));
+    }
+
+    public static double readDouble(byte[] data, int pointer) {
+        return Double.longBitsToDouble(readLong(data, pointer));
+    }
+
+    public static boolean readBoolean(byte[] data, int pointer) {
+        return data[pointer] != 0;
+    }
+
 }
