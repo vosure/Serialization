@@ -1,5 +1,7 @@
 package com.vosure.main;
 
+import com.vosure.serialization.Field;
+import com.vosure.serialization.IntField;
 import com.vosure.serialization.SerializationWriter;
 
 public class Main {
@@ -10,14 +12,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        byte[] data = new byte[16];
 
-        long number = Long.MAX_VALUE;
+        Field field = new IntField("Test", 8);
+        byte[] data = new byte[100];
 
-        int pointer = SerializationWriter.writeBytes(data, 0, number);
-        pointer = SerializationWriter.writeBytes(data, pointer, number);
-
+        field.getBytes(data, 0);
         printBytes(data);
+
     }
 
 }
