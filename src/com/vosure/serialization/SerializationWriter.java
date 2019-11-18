@@ -12,6 +12,55 @@ public class SerializationWriter {
         return pointer;
     }
 
+    public static int writeBytes(byte[] dest, int pointer, short[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, char[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, int[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, long[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, float[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, double[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
+    public static int writeBytes(byte[] dest, int pointer, boolean[] data) {
+        for (int i = 0; i < data.length; i++)
+            pointer = writeBytes(dest, pointer, data[i]);
+
+        return pointer;
+    }
+
     public static int writeBytes(byte[] dest, int pointer, byte value) {
         dest[pointer++] = value;
 

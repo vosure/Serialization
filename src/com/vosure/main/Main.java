@@ -1,8 +1,7 @@
 package com.vosure.main;
 
+import com.vosure.serialization.Array;
 import com.vosure.serialization.Field;
-import com.vosure.serialization.IntField;
-import com.vosure.serialization.SerializationWriter;
 
 public class Main {
 
@@ -12,12 +11,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        int[] elements = new int[] {1, 2, 3, 4,5};
+        Array array = Array.Integer("Test", elements);
 
-        Field field = new IntField("Test", 8);
-        byte[] data = new byte[100];
-
-        field.getBytes(data, 0);
-        printBytes(data);
+        byte[] writtenData = new byte[array.getSize()];
+        array.getBytes(writtenData, 0);
+        printBytes(writtenData);
 
     }
 
