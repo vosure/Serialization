@@ -13,6 +13,8 @@ public class HandmadeObject {
     private int size = 1 + 2 + 4 + 2 + 2;
     private short fieldCount;
     private ArrayList<HandmadeField> fields = new ArrayList<>();
+    private short stringCount;
+    private ArrayList<HandmadeString> strings = new ArrayList<>();
     private short arrayCount;
     private ArrayList<HandmadeArray> arrays = new ArrayList<>();
 
@@ -40,6 +42,12 @@ public class HandmadeObject {
         fieldCount++;
     }
 
+    public void addString(HandmadeString string) {
+        strings.add(string);
+        size += string.getSize();
+        stringCount++;
+    }
+
     public void addArray(HandmadeArray array) {
         arrays.add(array);
         size += array.getSize();
@@ -59,6 +67,11 @@ public class HandmadeObject {
         pointer = writeBytes(dest, pointer, fieldCount);
         for (HandmadeField field : fields)
             pointer = field.getBytes(dest, pointer);
+
+        pointer = writeBytes(dest, pointer, stringCount);
+        for (HandmadeString string : strings)
+            pointer = string.getBytes(dest, pointer);
+
 
         pointer = writeBytes(dest, pointer, arrayCount);
         for (HandmadeArray array : arrays)
