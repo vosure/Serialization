@@ -10,6 +10,8 @@ public class HandmadeArray {
     public byte type;
     public int count;
 
+    private int size = 1 + 2 + 4 + 1 + 4;
+
     private byte[] byteData;
     private short[] shortData;
     private char[] charData;
@@ -22,8 +24,17 @@ public class HandmadeArray {
     public void setName(String name) {
         assert (name.length() > Short.MAX_VALUE);
 
+        if (this.name != null) {
+            size -= this.name.length;
+        }
+
         nameLength = (short) name.length();
         this.name = name.getBytes();
+        size += nameLength;
+    }
+
+    private void updateSize() {
+        size += getDataSize();
     }
 
     public int getBytes(byte[] dest, int pointer) {
@@ -63,7 +74,7 @@ public class HandmadeArray {
     }
 
     public int getSize() {
-        return (1 + 2 + name.length + 1 + 4 + getDataSize());
+        return size;
     }
 
     public int getDataSize() {
@@ -97,6 +108,8 @@ public class HandmadeArray {
         array.count = data.length;
         array.byteData =data;
 
+        array.updateSize();
+
         return array;
     }
 
@@ -117,6 +130,8 @@ public class HandmadeArray {
         array.count = data.length;
         array.charData = data;
 
+        array.updateSize();
+
         return array;
     }
 
@@ -126,6 +141,8 @@ public class HandmadeArray {
         array.type = Type.INTEGER;
         array.count = data.length;
         array.intData = data;
+
+        array.updateSize();
 
         return array;
     }
@@ -137,6 +154,8 @@ public class HandmadeArray {
         array.count = data.length;
         array.longData = data;
 
+        array.updateSize();
+
         return array;
     }
 
@@ -146,6 +165,8 @@ public class HandmadeArray {
         array.type = Type.FLOAT;
         array.count = data.length;
         array.floatData = data;
+
+        array.updateSize();
 
         return array;
     }
@@ -157,6 +178,8 @@ public class HandmadeArray {
         array.count = data.length;
         array.doubleData = data;
 
+        array.updateSize();
+
         return array;
     }
 
@@ -166,6 +189,8 @@ public class HandmadeArray {
         array.type = Type.BOOLEAN;
         array.count = data.length;
         array.booleanData = data;
+
+        array.updateSize();
 
         return array;
     }

@@ -10,12 +10,13 @@ public class HandmadeObject {
     public short nameLength;
     public byte[] name;
 
+    private int size = 1 + 2 + 4 + 2 + 2;
     private short fieldCount;
     private ArrayList<HandmadeField> fields = new ArrayList<>();
     private short arrayCount;
     private ArrayList<HandmadeArray> arrays = new ArrayList<>();
 
-    private int size = 1 + 2 + 2 + 2;
+
 
     public HandmadeObject(String name) {
         setName(name);
@@ -53,6 +54,7 @@ public class HandmadeObject {
         pointer = writeBytes(dest, pointer, CONTAINER_TYPE);
         pointer = writeBytes(dest, pointer, nameLength);
         pointer = writeBytes(dest, pointer, name);
+        pointer = writeBytes(dest, pointer, size);
 
         pointer = writeBytes(dest, pointer, fieldCount);
         for (HandmadeField field : fields)
