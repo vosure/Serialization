@@ -2,7 +2,7 @@ package com.vosure.serialization;
 
 import static com.vosure.serialization.SerializationWriter.*;
 
-public class Field {
+public class HandmadeField {
 
     public static final byte CONTAINER_TYPE = ContainerType.FIELD;
     public short nameLength;
@@ -31,8 +31,8 @@ public class Field {
         return (1 + 2 + name.length + 1 + data.length);
     }
 
-    public static Field Byte(String name, byte value) {
-        Field field = new Field();
+    public static HandmadeField Byte(String name, byte value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.BYTE;
         field.data = new byte[Type.getSize(Type.BYTE)];
@@ -41,8 +41,8 @@ public class Field {
         return field;
     }
 
-    public static Field Short(String name, short value) {
-        Field field = new Field();
+    public static HandmadeField Short(String name, short value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.SHORT;
         field.data = new byte[Type.getSize(Type.SHORT)];
@@ -51,8 +51,8 @@ public class Field {
         return field;
     }
 
-    public static Field Char(String name, char value) {
-        Field field = new Field();
+    public static HandmadeField Char(String name, char value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.CHAR;
         field.data = new byte[Type.getSize(Type.CHAR)];
@@ -61,8 +61,8 @@ public class Field {
         return field;
     }
 
-    public static Field Integer(String name, int value) {
-        Field field = new Field();
+    public static HandmadeField Integer(String name, int value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.INTEGER;
         field.data = new byte[Type.getSize(Type.INTEGER)];
@@ -71,8 +71,8 @@ public class Field {
         return field;
     }
 
-    public static Field Long(String name, long value) {
-        Field field = new Field();
+    public static HandmadeField Long(String name, long value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.LONG;
         field.data = new byte[Type.getSize(Type.LONG)];
@@ -81,8 +81,8 @@ public class Field {
         return field;
     }
 
-    public static Field Float(String name, float value) {
-        Field field = new Field();
+    public static HandmadeField Float(String name, float value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.FLOAT;
         field.data = new byte[Type.getSize(Type.FLOAT)];
@@ -91,8 +91,8 @@ public class Field {
         return field;
     }
 
-    public static Field Double(String name, double value) {
-        Field field = new Field();
+    public static HandmadeField Double(String name, double value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.DOUBLE;
         field.data = new byte[Type.getSize(Type.DOUBLE)];
@@ -101,8 +101,8 @@ public class Field {
         return field;
     }
 
-    public static Field Boolean(String name, boolean value) {
-        Field field = new Field();
+    public static HandmadeField Boolean(String name, boolean value) {
+        HandmadeField field = new HandmadeField();
         field.setName(name);
         field.type = Type.BOOLEAN;
         field.data = new byte[Type.getSize(Type.BOOLEAN)];

@@ -1,7 +1,9 @@
 package com.vosure.main;
 
-import com.vosure.serialization.Array;
-import com.vosure.serialization.Field;
+import com.vosure.serialization.HandmadeArray;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 
 public class Main {
 
@@ -10,9 +12,19 @@ public class Main {
             System.out.printf("0x%x ", data[i]);
     }
 
+    static void saveToFile(String path, byte[] data) {
+        try {
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(path));
+            stream.write(data);
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         int[] elements = new int[] {1, 2, 3, 4,5};
-        Array array = Array.Integer("Test", elements);
+        HandmadeArray array = HandmadeArray.Integer("Test", elements);
 
         byte[] writtenData = new byte[array.getSize()];
         array.getBytes(writtenData, 0);

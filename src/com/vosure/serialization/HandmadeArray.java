@@ -2,7 +2,7 @@ package com.vosure.serialization;
 
 import static com.vosure.serialization.SerializationWriter.writeBytes;
 
-public class Array {
+public class HandmadeArray {
 
     public static final byte CONTAINER_TYPE = ContainerType.ARRAY;
     public short nameLength;
@@ -90,8 +90,8 @@ public class Array {
         return 0;
     }
 
-    public static Array Byte(String name, byte[] data) {
-        Array array = new Array();
+    public static HandmadeArray Byte(String name, byte[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.BYTE;
         array.count = data.length;
@@ -100,8 +100,8 @@ public class Array {
         return array;
     }
 
-    public static Array Short(String name, short[] data) {
-        Array array = new Array();
+    public static HandmadeArray Short(String name, short[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.SHORT;
         array.count = data.length;
@@ -110,8 +110,8 @@ public class Array {
         return array;
     }
 
-    public static Array Char(String name, char[] data) {
-        Array array = new Array();
+    public static HandmadeArray Char(String name, char[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.CHAR;
         array.count = data.length;
@@ -120,8 +120,8 @@ public class Array {
         return array;
     }
 
-    public static Array Integer(String name, int[] data) {
-        Array array = new Array();
+    public static HandmadeArray Integer(String name, int[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.INTEGER;
         array.count = data.length;
@@ -130,8 +130,8 @@ public class Array {
         return array;
     }
 
-    public static Array Long(String name, long[] data) {
-        Array array = new Array();
+    public static HandmadeArray Long(String name, long[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.LONG;
         array.count = data.length;
@@ -140,8 +140,8 @@ public class Array {
         return array;
     }
 
-    public static Array Float(String name, float[] data) {
-        Array array = new Array();
+    public static HandmadeArray Float(String name, float[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.FLOAT;
         array.count = data.length;
@@ -150,8 +150,8 @@ public class Array {
         return array;
     }
 
-    public static Array Double(String name, double[] data) {
-        Array array = new Array();
+    public static HandmadeArray Double(String name, double[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.DOUBLE;
         array.count = data.length;
@@ -160,8 +160,8 @@ public class Array {
         return array;
     }
 
-    public static Array Boolean(String name, boolean[] data) {
-        Array array = new Array();
+    public static HandmadeArray Boolean(String name, boolean[] data) {
+        HandmadeArray array = new HandmadeArray();
         array.setName(name);
         array.type = Type.BOOLEAN;
         array.count = data.length;
