@@ -106,7 +106,7 @@ public class HandmadeArray {
         array.setName(name);
         array.type = Type.BYTE;
         array.count = data.length;
-        array.byteData =data;
+        array.byteData = data;
 
         array.updateSize();
 

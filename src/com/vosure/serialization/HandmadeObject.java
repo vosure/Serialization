@@ -2,7 +2,7 @@ package com.vosure.serialization;
 
 import java.util.ArrayList;
 
-import static com.vosure.serialization.SerializationWriter.writeBytes;
+import static com.vosure.serialization.SerializationWriter.*;
 
 public class HandmadeObject {
 
@@ -10,7 +10,7 @@ public class HandmadeObject {
     public short nameLength;
     public byte[] name;
 
-    private int size = 1 + 2 + 4 + 2 + 2;
+    private int size = 1 + 2 + 4 + 2 + 2 + 2;
     private short fieldCount;
     private ArrayList<HandmadeField> fields = new ArrayList<>();
     private short stringCount;
@@ -18,10 +18,18 @@ public class HandmadeObject {
     private short arrayCount;
     private ArrayList<HandmadeArray> arrays = new ArrayList<>();
 
+    private static final int sizeOffset = 1 + 2 + 4;
 
+    private HandmadeObject() {
+
+    }
 
     public HandmadeObject(String name) {
         setName(name);
+    }
+
+    public String getName() {
+        return new String(name, 0, nameLength);
     }
 
     public void setName(String name) {
@@ -78,6 +86,40 @@ public class HandmadeObject {
             pointer = array.getBytes(dest, pointer);
 
         return pointer;
+    }
+
+    public static HandmadeObject Deserialize(byte[] data, int pointer) {
+        byte containerType = data[pointer++];
+        assert (containerType == CONTAINER_TYPE);
+
+        HandmadeObject result = new HandmadeObject();
+
+        result.nameLength = readShort(data, pointer);
+        pointer += 2;
+
+        result.name = readString(data, pointer, result.nameLength).getBytes();
+        pointer += result.nameLength;
+
+        result.size = readInt(data, pointer);
+        pointer += 4;
+
+        pointer += result.size - sizeOffset - result.nameLength;
+        if (true)
+            return result;
+
+        result.fieldCount = readShort(data, pointer);
+        pointer += 2;
+        //Field Deserialization
+
+        result.stringCount = readShort(data, pointer);
+        pointer += 2;
+        //Strings Deserialization
+
+        result.arrayCount = readShort(data, pointer);
+        pointer += 2;
+        //Arrays Deserialization
+
+        return result;
     }
 
 }

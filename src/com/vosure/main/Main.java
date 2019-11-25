@@ -1,11 +1,14 @@
 package com.vosure.main;
 
-import com.vosure.serialization.HandmadeArray;
+import com.vosure.serialization.*;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.util.Random;
 
 public class Main {
+
+    static Random random = new Random();
 
     static void printBytes(byte[] data) {
         for (int i = 0; i < data.length; i++)
@@ -22,13 +25,34 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
-        int[] elements = new int[] {1, 2, 3, 4,5};
-        HandmadeArray array = HandmadeArray.Integer("Test", elements);
+    public static void serializationTest() {
+        int data[] = new int[50000];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = random.nextInt();
+        }
 
-        byte[] writtenData = new byte[array.getSize()];
-        array.getBytes(writtenData, 0);
-        printBytes(writtenData);
+        HandmadeDatabase database = new HandmadeDatabase("DataBase");
+
+        HandmadeArray array = HandmadeArray.Integer("Random Numbers", data);
+        HandmadeField field = HandmadeField.Integer("Integer", 8);
+
+        HandmadeObject object = new HandmadeObject("Entity");
+
+        object.addArray(array);
+        object.addField(field);
+        object.addString(HandmadeString.Create("qwe", "test string"));
+
+        database.addObject(object);
+
+        byte[] stream = new byte[database.getSize()];
+        database.getBytes(stream, 0);
+        saveToFile("test.hmsr", stream);
+    }
+    public static void deserializationTest() {
+
+    }
+
+    public static void main(String[] args) {
 
     }
 

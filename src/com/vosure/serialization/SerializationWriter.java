@@ -1,5 +1,7 @@
 package com.vosure.serialization;
 
+import java.nio.ByteBuffer;
+
 public class SerializationWriter {
 
     public static final byte[] HEADER = "HS".getBytes();
@@ -140,7 +142,8 @@ public class SerializationWriter {
     }
 
     public static int readInt(byte[] data, int pointer) {
-        return (int) ((data[pointer] << 24) | (data[pointer + 1] << 16) | (data[pointer + 2] << 8) | (data[pointer + 3]));
+        return ByteBuffer.wrap(data, pointer, 4).getInt();
+       //return (int) ((data[pointer] << 24) | (data[pointer + 1] << 16) | (data[pointer + 2] << 8) | (data[pointer + 3]));
     }
 
     public static long readLong(byte[] data, int pointer) {
@@ -158,6 +161,10 @@ public class SerializationWriter {
 
     public static boolean readBoolean(byte[] data, int pointer) {
         return data[pointer] != 0;
+    }
+
+    public static String readString(byte[] data, int pointer, int length) {
+        return new String(data, pointer, length);
     }
 
 }
