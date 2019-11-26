@@ -1,6 +1,7 @@
 package com.vosure.serialization;
 
-import static com.vosure.serialization.SerializationWriter.writeBytes;
+import static com.vosure.serialization.SerializationWriter.*;
+import static com.vosure.serialization.SerializationWriter.readBytes;
 
 public class HandmadeArray {
 
@@ -20,6 +21,14 @@ public class HandmadeArray {
     private float[] floatData;
     private double[] doubleData;
     private boolean[] booleanData;
+
+    private HandmadeArray() {
+
+    }
+
+    public String getName() {
+        return new String(name, 0, nameLength);
+    }
 
     public void setName(String name) {
         assert (name.length() > Short.MAX_VALUE);
@@ -41,6 +50,7 @@ public class HandmadeArray {
         pointer = writeBytes(dest, pointer, CONTAINER_TYPE);
         pointer = writeBytes(dest, pointer, nameLength);
         pointer = writeBytes(dest, pointer, name);
+        pointer = writeBytes(dest, pointer, size);
         pointer = writeBytes(dest, pointer, type);
         pointer = writeBytes(dest, pointer, count);
         switch (type) {
@@ -193,6 +203,64 @@ public class HandmadeArray {
         array.updateSize();
 
         return array;
+    }
+
+    public static HandmadeArray Deserialize(byte[] data, int pointer) {
+        byte containerType = data[pointer++];
+        assert (containerType == CONTAINER_TYPE);
+
+        HandmadeArray result = new HandmadeArray();
+
+        result.nameLength = readShort(data, pointer);
+        pointer += 2;
+
+        result.name = readString(data, pointer, result.nameLength).getBytes();
+        pointer += result.nameLength;
+
+        result.size = readInt(data, pointer);
+        pointer += 4;
+
+        result.type = data[pointer++];
+
+        result.count = readInt(data, pointer);
+        pointer += 4;
+
+        switch (result.type) {
+            case Type.BYTE:
+                result.byteData = new byte[result.count];
+                readBytes(data, pointer, result.byteData);
+                break;
+            case Type.SHORT:
+                result.shortData = new short[result.count];
+                readShorts(data, pointer, result.shortData);
+                break;
+            case Type.CHAR:
+                result.charData = new char[result.count];
+                readChars(data, pointer, result.charData);
+                break;
+            case Type.INTEGER:
+                result.intData = new int[result.count];
+                readInts(data, pointer, result.intData);
+                break;
+            case Type.LONG:
+                result.longData = new long[result.count];
+                readLongs(data, pointer, result.longData);
+                break;
+            case Type.FLOAT:
+                result.floatData = new float[result.count];
+                readFloats(data, pointer, result.floatData);
+                break;
+            case Type.DOUBLE:
+                result.doubleData = new double[result.count];
+                readDoubles(data, pointer, result.doubleData);
+                break;
+            case Type.BOOLEAN:
+                result.booleanData = new boolean[result.count];
+                readBooleans(data, pointer, result.booleanData);
+                break;
+        }
+
+        return result;
     }
 
 }

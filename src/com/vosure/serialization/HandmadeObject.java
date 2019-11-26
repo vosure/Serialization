@@ -109,15 +109,27 @@ public class HandmadeObject {
 
         result.fieldCount = readShort(data, pointer);
         pointer += 2;
-        //Field Deserialization
+        for (int i = 0; i < result.fieldCount; i++) {
+            HandmadeField field = HandmadeField.Deserialize(data, pointer);
+            result.fields.add(field);
+            pointer += field.getSize();
+        }
 
         result.stringCount = readShort(data, pointer);
         pointer += 2;
-        //Strings Deserialization
+        for (int i = 0; i < result.stringCount; i++) {
+            HandmadeString string = HandmadeString.Deserialize(data, pointer);
+            result.strings.add(string);
+            pointer += string.getSize();
+        }
 
         result.arrayCount = readShort(data, pointer);
         pointer += 2;
-        //Arrays Deserialization
+        for (int i = 0; i < result.arrayCount; i++) {
+            HandmadeArray array = HandmadeArray.Deserialize(data, pointer);
+            result.arrays.add(array);
+            pointer += array.getSize();
+        }
 
         return result;
     }

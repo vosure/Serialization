@@ -1,6 +1,7 @@
 package com.vosure.serialization;
 
-import static com.vosure.serialization.SerializationWriter.writeBytes;
+import static com.vosure.serialization.SerializationWriter.*;
+import static com.vosure.serialization.SerializationWriter.readBytes;
 
 public class HandmadeString {
 
@@ -59,6 +60,32 @@ public class HandmadeString {
         string.updateSize();
 
         return string;
+    }
+
+    public static HandmadeString Deserialize(byte[] data, int pointer) {
+        byte containerType = data[pointer++];
+        assert (containerType == CONTAINER_TYPE);
+
+        HandmadeString result = new HandmadeString();
+
+        result.nameLength = readShort(data, pointer);
+        pointer += 2;
+
+        result.name = readString(data, pointer, result.nameLength).getBytes();
+        pointer += result.nameLength;
+
+        result.size = readInt(data, pointer);
+        pointer += 4;
+
+        result.count = readInt(data, pointer);
+        pointer += 4;
+
+        result.characters = new char[result.count];
+        readChars(data, pointer, result.characters);
+
+        pointer += result.count * Type.getSize(Type.CHAR);
+
+        return result;
     }
 
 }

@@ -10,6 +10,14 @@ public class HandmadeField {
     public byte type;
     public byte[] data;
 
+    private HandmadeField() {
+
+    }
+
+    public String getName() {
+        return new String(name, 0, nameLength);
+    }
+
     public void setName(String name) {
         assert (name.length() > Short.MAX_VALUE);
 
@@ -111,5 +119,25 @@ public class HandmadeField {
         return field;
     }
 
+    public static HandmadeField Deserialize(byte[] data, int pointer) {
+        byte containerType = data[pointer++];
+        assert (containerType == CONTAINER_TYPE);
+
+        HandmadeField result = new HandmadeField();
+
+        result.nameLength = readShort(data, pointer);
+        pointer += 2;
+
+        result.name = readString(data, pointer, result.nameLength).getBytes();
+        pointer += result.nameLength;
+
+        result.type = data[pointer++];
+
+        result.data = new byte[Type.getSize(result.type)];
+        readBytes(data, pointer, result.data);
+        pointer += Type.getSize(result.type);
+
+        return result;
+    }
 
 }

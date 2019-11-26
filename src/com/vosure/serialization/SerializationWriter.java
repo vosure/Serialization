@@ -133,17 +133,44 @@ public class SerializationWriter {
         return data[pointer];
     }
 
+    public static void readBytes(byte[] src, int pointer, byte[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = src[pointer + i];
+        }
+    }
+
     public static short readShort(byte[] data, int pointer) {
         return (short) ((data[pointer] << 8) | (data[pointer + 1]));
+    }
+
+    public static void readShorts(byte[] src, int pointer, short[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readShort(src, pointer);
+            pointer += Type.getSize(Type.SHORT);
+        }
     }
 
     public static char readChar(byte[] data, int pointer) {
         return (char) ((data[pointer] << 8) | (data[pointer + 1]));
     }
 
+    public static void readChars(byte[] src, int pointer, char[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readChar(src, pointer);
+            pointer += Type.getSize(Type.CHAR);
+        }
+    }
+
     public static int readInt(byte[] data, int pointer) {
         return ByteBuffer.wrap(data, pointer, 4).getInt();
-       //return (int) ((data[pointer] << 24) | (data[pointer + 1] << 16) | (data[pointer + 2] << 8) | (data[pointer + 3]));
+        //return (int) ((data[pointer] << 24) | (data[pointer + 1] << 16) | (data[pointer + 2] << 8) | (data[pointer + 3]));
+    }
+
+    public static void readInts(byte[] src, int pointer, int[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readInt(src, pointer);
+            pointer += Type.getSize(Type.INTEGER);
+        }
     }
 
     public static long readLong(byte[] data, int pointer) {
@@ -151,16 +178,44 @@ public class SerializationWriter {
                 (data[pointer + 4] << 24) | (data[pointer + 5] << 16) | (data[pointer + 6] << 8) | (data[pointer + 7]));
     }
 
+    public static void readLongs(byte[] src, int pointer, long[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readLong(src, pointer);
+            pointer += Type.getSize(Type.LONG);
+        }
+    }
+
     public static float readFloat(byte[] data, int pointer) {
         return Float.intBitsToFloat(readInt(data, pointer));
+    }
+
+    public static void readFloats(byte[] src, int pointer, float[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readFloat(src, pointer);
+            pointer += Type.getSize(Type.FLOAT);
+        }
     }
 
     public static double readDouble(byte[] data, int pointer) {
         return Double.longBitsToDouble(readLong(data, pointer));
     }
 
+    public static void readDoubles(byte[] src, int pointer, double[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readDouble(src, pointer);
+            pointer += Type.getSize(Type.DOUBLE);
+        }
+    }
+
     public static boolean readBoolean(byte[] data, int pointer) {
         return data[pointer] != 0;
+    }
+
+    public static void readBooleans(byte[] src, int pointer, boolean[] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            dest[i] = readBoolean(src, pointer);
+            pointer += Type.getSize(Type.BOOLEAN);
+        }
     }
 
     public static String readString(byte[] data, int pointer, int length) {
