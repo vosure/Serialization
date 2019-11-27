@@ -1,45 +1,28 @@
 package com.vosure.serialization;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-import static com.vosure.serialization.SerializationWriter.*;
+import static com.vosure.serialization.SerializationUtils.*;
 
-public class HandmadeDatabase {
+public class HandmadeDatabase extends HandmadeBase{
 
     public static final byte[] HEADER = "HSDB".getBytes();
+    public static final short VERSION = 0x0100;
     public static final byte CONTAINER_TYPE = ContainerType.DATABASE;
-    public short nameLength;
-    public byte[] name;
 
-    public int size = HEADER.length + 1 + 2 + 4 + 2;
     public short objectCount;
     public ArrayList<HandmadeObject> objects = new ArrayList<>();
 
     private HandmadeDatabase() {
-
     }
 
     public HandmadeDatabase(String name) {
         setName(name);
-    }
-
-    public String getName() {
-        return new String(name, 0, nameLength);
-    }
-
-    public void setName(String name) {
-        assert (name.length() > Short.MAX_VALUE);
-
-        if (this.name != null) {
-            size -= this.name.length;
-        }
-
-        nameLength = (short) name.length();
-        this.name = name.getBytes();
-        size += nameLength;
+        size += HEADER.length + 2 + 1 + 2;
     }
 
     public void addObject(HandmadeObject object) {
@@ -53,6 +36,8 @@ public class HandmadeDatabase {
     }
 
     public int getBytes(byte[] dest, int pointer) {
+        pointer = writeBytes(dest, pointer, HEADER);
+        pointer = writeBytes(dest, pointer, VERSION);
         pointer = writeBytes(dest, pointer, CONTAINER_TYPE);
         pointer = writeBytes(dest, pointer, nameLength);
         pointer = writeBytes(dest, pointer, name);
@@ -65,10 +50,37 @@ public class HandmadeDatabase {
         return pointer;
     }
 
+    public HandmadeObject findObject(String name) {
+        for (HandmadeObject object : objects) {
+            if (object.getName().equals(name))
+                return object;
+        }
+
+        return null;
+    }
+
+    public void serializeToFile(String path) {
+        byte[] data = new byte[getSize()];
+        getBytes(data, 0);
+        try {
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(path));
+            stream.write(data);
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static HandmadeDatabase Deserialize(byte[] data) {
         int pointer = 0;
         assert (readString(data, pointer, HEADER.length).equals(HEADER));
         pointer += HEADER.length;
+
+        if (readShort(data, pointer) != VERSION) {
+            System.err.println("Invalid version");
+            return null;
+        }
+        pointer += 2;
 
         byte containerType = readByte(data, pointer++);
         assert (containerType == CONTAINER_TYPE);

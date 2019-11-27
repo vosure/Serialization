@@ -2,10 +2,7 @@ package com.vosure.serialization;
 
 import java.nio.ByteBuffer;
 
-public class SerializationWriter {
-
-    public static final byte[] HEADER = "HS".getBytes();
-    public static final short VERSION = 0x0100;
+public class SerializationUtils {
 
     public static int writeBytes(byte[] dest, int pointer, byte[] data) {
         for (int i = 0; i < data.length; i++)
@@ -140,7 +137,7 @@ public class SerializationWriter {
     }
 
     public static short readShort(byte[] data, int pointer) {
-        return (short) ((data[pointer] << 8) | (data[pointer + 1]));
+        return ByteBuffer.wrap(data, pointer, 2).getShort();
     }
 
     public static void readShorts(byte[] src, int pointer, short[] dest) {
@@ -151,7 +148,7 @@ public class SerializationWriter {
     }
 
     public static char readChar(byte[] data, int pointer) {
-        return (char) ((data[pointer] << 8) | (data[pointer + 1]));
+        return ByteBuffer.wrap(data, pointer, 2).getChar();
     }
 
     public static void readChars(byte[] src, int pointer, char[] dest) {
@@ -163,7 +160,6 @@ public class SerializationWriter {
 
     public static int readInt(byte[] data, int pointer) {
         return ByteBuffer.wrap(data, pointer, 4).getInt();
-        //return (int) ((data[pointer] << 24) | (data[pointer + 1] << 16) | (data[pointer + 2] << 8) | (data[pointer + 3]));
     }
 
     public static void readInts(byte[] src, int pointer, int[] dest) {
@@ -174,8 +170,7 @@ public class SerializationWriter {
     }
 
     public static long readLong(byte[] data, int pointer) {
-        return (long) ((data[pointer] << 56) | (data[pointer + 1] << 48) | (data[pointer + 2] << 40) | (data[pointer + 3] << 32) |
-                (data[pointer + 4] << 24) | (data[pointer + 5] << 16) | (data[pointer + 6] << 8) | (data[pointer + 7]));
+        return ByteBuffer.wrap(data, pointer, 8).getLong();
     }
 
     public static void readLongs(byte[] src, int pointer, long[] dest) {

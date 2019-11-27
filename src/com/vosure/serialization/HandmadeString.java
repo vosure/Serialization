@@ -1,32 +1,20 @@
 package com.vosure.serialization;
 
-import static com.vosure.serialization.SerializationWriter.*;
-import static com.vosure.serialization.SerializationWriter.readBytes;
+import static com.vosure.serialization.SerializationUtils.*;
 
-public class HandmadeString {
+public class HandmadeString extends HandmadeBase {
 
     public static final byte CONTAINER_TYPE = ContainerType.STRING;
-    public short nameLength;
-    public byte[] name;
-    public int size = 1 + 2 + 4 +4;
     public int count;
 
     private char[] characters;
 
-    private HandmadeString(){
-
+    private HandmadeString() {
+        size += 1 + 4;
     }
 
-    public void setName(String name) {
-        assert (name.length() > Short.MAX_VALUE);
-
-        if (this.name != null) {
-            size -= this.name.length;
-        }
-
-        nameLength = (short) name.length();
-        this.name = name.getBytes();
-        size += nameLength;
+    public String getString() {
+        return new String(characters);
     }
 
     private void updateSize() {

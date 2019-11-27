@@ -2,15 +2,12 @@ package com.vosure.serialization;
 
 import java.util.ArrayList;
 
-import static com.vosure.serialization.SerializationWriter.*;
+import static com.vosure.serialization.SerializationUtils.*;
 
-public class HandmadeObject {
+public class HandmadeObject extends HandmadeBase{
 
     public static final byte CONTAINER_TYPE = ContainerType.OBJECT;
-    public short nameLength;
-    public byte[] name;
 
-    private int size = 1 + 2 + 4 + 2 + 2 + 2;
     private short fieldCount;
     private ArrayList<HandmadeField> fields = new ArrayList<>();
     private short stringCount;
@@ -18,30 +15,13 @@ public class HandmadeObject {
     private short arrayCount;
     private ArrayList<HandmadeArray> arrays = new ArrayList<>();
 
-    private static final int sizeOffset = 1 + 2 + 4;
-
     private HandmadeObject() {
 
     }
 
     public HandmadeObject(String name) {
+        size += 1 + 2 + 2 + 2;
         setName(name);
-    }
-
-    public String getName() {
-        return new String(name, 0, nameLength);
-    }
-
-    public void setName(String name) {
-        assert (name.length() > Short.MAX_VALUE);
-
-        if (this.name != null) {
-            size -= this.name.length;
-        }
-
-        nameLength = (short) name.length();
-        this.name = name.getBytes();
-        size += nameLength;
     }
 
     public void addField(HandmadeField field) {
@@ -64,6 +44,33 @@ public class HandmadeObject {
 
     public int getSize() {
         return size;
+    }
+
+    public HandmadeString findString(String name) {
+        for (HandmadeString string : strings) {
+            if (string.getName().equals(name))
+                return string;
+        }
+
+        return null;
+    }
+
+    public HandmadeArray findArray(String name) {
+        for (HandmadeArray array : arrays) {
+            if (array.getName().equals(name))
+                return array;
+        }
+
+        return null;
+    }
+
+    public HandmadeField findField(String name) {
+        for (HandmadeField field : fields) {
+            if (field.getName().equals(name))
+                return field;
+        }
+
+        return null;
     }
 
     public int getBytes(byte[] dest, int pointer) {
@@ -102,10 +109,6 @@ public class HandmadeObject {
 
         result.size = readInt(data, pointer);
         pointer += 4;
-
-        pointer += result.size - sizeOffset - result.nameLength;
-        if (true)
-            return result;
 
         result.fieldCount = readShort(data, pointer);
         pointer += 2;

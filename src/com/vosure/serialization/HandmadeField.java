@@ -1,28 +1,36 @@
 package com.vosure.serialization;
 
-import static com.vosure.serialization.SerializationWriter.*;
+import static com.vosure.serialization.SerializationUtils.*;
 
-public class HandmadeField {
+public class HandmadeField extends HandmadeBase{
 
     public static final byte CONTAINER_TYPE = ContainerType.FIELD;
-    public short nameLength;
-    public byte[] name;
     public byte type;
     public byte[] data;
 
     private HandmadeField() {
-
     }
 
-    public String getName() {
-        return new String(name, 0, nameLength);
-    }
-
-    public void setName(String name) {
-        assert (name.length() > Short.MAX_VALUE);
-
-        nameLength = (short) name.length();
-        this.name = name.getBytes();
+    public <T> T value() {
+        switch (this.type) {
+            case Type.BYTE:
+                return (T)(Byte)readByte(data, 0);
+            case Type.SHORT:
+                return (T)(Short)readShort(data, 0);
+            case Type.CHAR:
+                return (T)(Character)readChar(data, 0);
+            case Type.INTEGER:
+                return (T)(Integer)readInt(data, 0);
+            case Type.LONG:
+                return (T)(Long)readLong(data, 0);
+            case Type.FLOAT:
+                return (T)(Float)readFloat(data, 0);
+            case Type.DOUBLE:
+                return (T)(Double)readDouble(data, 0);
+            case Type.BOOLEAN:
+                return (T)(Boolean)readBoolean(data, 0);
+        }
+        return null;
     }
 
     public int getBytes(byte[] dest, int pointer) {

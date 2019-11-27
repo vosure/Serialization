@@ -1,17 +1,13 @@
 package com.vosure.serialization;
 
-import static com.vosure.serialization.SerializationWriter.*;
-import static com.vosure.serialization.SerializationWriter.readBytes;
+import static com.vosure.serialization.SerializationUtils.*;
+import static com.vosure.serialization.SerializationUtils.readBytes;
 
-public class HandmadeArray {
+public class HandmadeArray extends HandmadeBase{
 
     public static final byte CONTAINER_TYPE = ContainerType.ARRAY;
-    public short nameLength;
-    public byte[] name;
     public byte type;
     public int count;
-
-    private int size = 1 + 2 + 4 + 1 + 4;
 
     private byte[] byteData;
     private short[] shortData;
@@ -23,23 +19,7 @@ public class HandmadeArray {
     private boolean[] booleanData;
 
     private HandmadeArray() {
-
-    }
-
-    public String getName() {
-        return new String(name, 0, nameLength);
-    }
-
-    public void setName(String name) {
-        assert (name.length() > Short.MAX_VALUE);
-
-        if (this.name != null) {
-            size -= this.name.length;
-        }
-
-        nameLength = (short) name.length();
-        this.name = name.getBytes();
-        size += nameLength;
+        size += 1 + 1 + 4;
     }
 
     private void updateSize() {
